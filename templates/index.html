@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Language Recognition</title>
+    <title>About | Sign Language AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;      /* Modern Indigo */
-            --primary-hover: #4338ca;
-            --bg: #f3f4f6;           /* Soft gray background */
-            --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
+            --bg-orange: #f27024;      
+            --bg-white: #f8fafc;       
+            --card-white: #ffffff;     
+            --text-dark-blue: #0a1f44; 
+            --darker-blue: #06132b;    
         }
 
         * {
@@ -23,200 +22,285 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
+            background-color: var(--text-dark-blue);
+            color: var(--bg-white);
+            line-height: 1.6;
         }
 
-        header {
+        .hero {
+            background-color: var(--bg-orange);
+            padding: 100px 20px 80px 20px; 
             text-align: center;
-            margin-bottom: 40px;
+            border-bottom: 4px solid #d45d1a; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45); 
+            position: relative; 
+            z-index: 10; 
         }
 
-        h1 {
-            font-size: 2.5rem;
+        .hero h1 {
+            font-size: 3.5rem;
             font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
+            color: var(--text-dark-blue);
+            margin-bottom: 10px;
         }
 
-        p.subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--card-white);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
         }
 
-        /* --- UPDATED: Side-by-Side Layout --- */
-        .main-container {
-            display: flex;
-            flex-direction: row; /* changed from column */
-            justify-content: center;
-            align-items: stretch; /* Makes both cards the same height */
-            gap: 30px;
-            width: 100%;
-            max-width: 1100px; /* Widened to fit both cards */
+        @keyframes floatBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
-        /* Styling for the webcam feed box */
-        .video-card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1.5; /* Takes up slightly more room for the video */
+        .btn-launch {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 1000; 
+            display: inline-block;
+            background-color: var(--text-dark-blue);
+            color: var(--card-white);
+            text-decoration: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 50px; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            border: 3px solid var(--card-white);
+            transition: all 0.3s ease;
+            animation: floatBounce 3s ease-in-out infinite; 
         }
 
-        .video-wrapper {
+        .btn-launch:hover {
+            animation: none; 
+            background-color: var(--bg-orange);
+            color: var(--text-dark-blue);
+            border-color: var(--bg-orange);
+            transform: translateY(-4px) scale(1.05); 
+            box-shadow: 0 15px 30px rgba(242, 112, 36, 0.5); 
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1; 
+        }
+
+        .section-box {
             border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid #e5e7eb;
-            background-color: #000;
-            width: 100%;
-            display: flex;
-            justify-content: center;
+            padding: 40px;
+            margin-bottom: 50px;
         }
 
-        img.webcam-feed {
+        .section-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .section-content.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .section-text {
+            flex: 1;
+        }
+
+        .section-image {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
+            border: 4px solid var(--text-dark-blue);
+        }
+
+        .section-image img {
             width: 100%;
             height: auto;
             display: block;
+            object-fit: cover;
+            aspect-ratio: 4/3; 
         }
 
-        /* Styling for the text output box */
-        .output-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* Centers the text box vertically */
-            align-items: center;
-            flex: 1; /* Takes up the remaining room */
+        .section-box.white-theme {
+            background-color: var(--card-white); 
+            color: var(--text-dark-blue); 
+            box-shadow: 10px 10px 0px var(--bg-orange); 
         }
 
-        .output-label {
-            text-transform: uppercase;
-            font-size: 0.85rem;
+        .section-box.white-theme h2 {
+            color: var(--bg-orange); 
+            border-bottom: 3px solid var(--text-dark-blue); 
+        }
+
+        .section-box.white-theme p, .section-box.white-theme ul {
             font-weight: 600;
-            color: var(--text-muted);
-            letter-spacing: 1.5px;
+        }
+
+        .section-box.orange-theme {
+            background-color: var(--bg-orange); 
+            color: var(--text-dark-blue); 
+            box-shadow: 10px 10px 0px var(--card-white); 
+        }
+
+        .section-box.orange-theme h2 {
+            color: var(--card-white); 
+            border-bottom: 3px solid var(--text-dark-blue); 
+        }
+
+        .section-box.orange-theme p, .section-box.orange-theme ul {
+            font-weight: 700; 
+        }
+
+        .section-box h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .section-box p {
+            font-size: 1.1rem;
             margin-bottom: 15px;
         }
 
-        .sentence-display {
-            font-size: 2.5rem; /* Made the text a bit larger */
-            font-weight: 600;
-            color: var(--primary);
-            min-height: 120px;
-            width: 100%;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border: 2px dashed #cbd5e1;
-            margin-bottom: 30px;
-            word-wrap: break-word;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .btn-clear {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 32px;
+        .section-box ul {
             font-size: 1.1rem;
+            list-style-type: square;
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .footer-credits {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: var(--darker-blue);
+            color: var(--card-white);
+            border-top: 4px solid var(--bg-orange);
+        }
+
+        .footer-credits h3 {
+            color: var(--bg-orange);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .team-names {
+            font-size: 1.2rem;
             font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
-            width: 100%; /* Makes the button fill the card width */
         }
 
-        .btn-clear:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(79, 70, 229, 0.3);
-        }
-
-        .btn-clear:active {
-            transform: translateY(0);
-        }
-        
-        .cursor {
-            display: inline-block;
-            width: 4px;
-            height: 2.5rem;
-            background-color: var(--primary);
-            margin-left: 5px;
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* --- Responsive Design for smaller screens --- */
-        @media (max-width: 900px) {
-            .main-container {
-                flex-direction: column;
-                align-items: center;
+        @media (max-width: 768px) {
+            .section-content, .section-content.reverse {
+                flex-direction: column-reverse;
+                text-align: center;
             }
-            .video-card, .output-card {
-                width: 100%;
-                max-width: 640px;
+            .section-box h2 {
+                margin-top: 20px;
+            }
+            .section-box ul {
+                text-align: left;
+            }
+            .btn-launch {
+                bottom: 20px;
+                right: 20px;
+                padding: 14px 24px;
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Sign Language Translation</h1>
-        <p class="subtitle">Live Neural Network Interface</p>
+    <header class="hero">
+        <h1>Sign Language AI</h1>
+        <p>AI-Powered Real-Time Neural Network Translation</p>
     </header>
 
-    <div class="main-container">
-        <div class="video-card">
-            <div class="video-wrapper">
-                <img src="{{ url_for('video') }}" class="webcam-feed" alt="Webcam Feed">
+    <a href="{{ url_for('translator') }}" class="btn-launch">Launch AI Scanner</a>
+
+    <div class="container">
+        
+        <div class="section-box white-theme">
+            <div class="section-content">
+                <div class="section-text">
+                    <h2>The AI Engine at Work</h2>
+                    <p>This application utilizes a custom-trained <strong>Deep Learning AI model</strong> alongside Google's MediaPipe <strong>Computer Vision</strong> framework to detect, track, and translate American Sign Language (ASL) in real-time.</p>
+                    <p>By extracting 21 precise 3D spatial coordinates on the human hand, our AI classifier calculates statistical probabilities to interpret gestures. The system also integrates a <strong>Natural Language Processing (NLP)</strong> algorithm to autonomously autocorrect spelling errors and contextually form coherent sentences on the fly.</p>
+                </div>
+                <div class="section-image">
+                    <img src="{{ url_for('static', filename='images/ai-engine.jpg') }}" alt="AI Neural Network">
+                </div>
             </div>
         </div>
 
-        <div class="output-card">
-            <div class="output-label">Live Formed Sentence</div>
-            <div class="sentence-display">
-                <span id="sentence-text"></span><span class="cursor"></span>
+        <div class="section-box orange-theme">
+            <div class="section-content reverse">
+                <div class="section-text">
+                    <h2>Why AI-Driven Accessibility Matters</h2>
+                    <p>Artificial Intelligence has the power to bridge critical communication gaps between the Deaf/Hard of Hearing community and non-signers.</p>
+                    <ul>
+                        <li><strong>For the Deaf Community:</strong> Provides an immediate, AI-powered way to communicate without relying on human interpreters.</li>
+                        <li><strong>For Public Infrastructure:</strong> Allows automated kiosks and service workers to seamlessly assist Deaf individuals through machine translation.</li>
+                        <li><strong>For AI Education:</strong> Acts as a machine-learning feedback loop to help students verify they are forming signs correctly.</li>
+                    </ul>
+                </div>
+                <div class="section-image">
+                    <img src="{{ url_for('static', filename='images/accessibility.jpg') }}" alt="Tech Accessibility">
+                </div>
             </div>
-            <button class="btn-clear" onclick="clearSentence()">Clear Translation</button>
         </div>
+
+        <div class="section-box white-theme">
+            <div class="section-content">
+                <div class="section-text">
+                    <h2>Real-World Machine Learning Use Cases</h2>
+                    <ul>
+                        <li><strong>Healthcare:</strong> Deploying the AI model in emergency rooms so patients can communicate symptoms directly to medical staff.</li>
+                        <li><strong>Smart Retail:</strong> Integrating computer vision algorithms into self-checkout cameras to process customer requests.</li>
+                        <li><strong>Video Conferencing:</strong> Embedding this neural network into Zoom or Teams to provide live, AI-generated closed-captioning for signed input.</li>
+                    </ul>
+                </div>
+                <div class="section-image">
+                    <img src="{{ url_for('static', filename='images/use-cases.jpg') }}" alt="Healthcare Tech">
+                </div>
+            </div>
+        </div>
+
+        <div class="section-box orange-theme">
+            <div class="section-content reverse">
+                <div class="section-text">
+                    <h2>Future AI Visions</h2>
+                    <p>While this MVP successfully translates static alphabets and custom vocabulary using a dense neural network, our roadmap for future AI integration includes:</p>
+                    <ul>
+                        <li><strong>Dynamic Motion Tracking:</strong> Upgrading from an image-based classifier to sequential AI architectures (like LSTMs or Transformers) to capture complex, continuous motion signs.</li>
+                        <li><strong>Generative AI Avatars:</strong> Implementing a two-way translation system where a 3D generative model translates spoken language back into visual sign language.</li>
+                        <li><strong>Edge AI Deployment:</strong> Porting the deep learning model to run natively on mobile hardware via TensorFlow Lite for completely offline use.</li>
+                    </ul>
+                </div>
+                <div class="section-image">
+                    <img src="{{ url_for('static', filename='images/future.jpg') }}" alt="Future Edge AI">
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <script>
-        setInterval(() => {
-            fetch('/get_sentence')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('sentence-text').innerText = data.sentence;
-                });
-        }, 500);
-
-        function clearSentence() {
-            fetch('/clear_sentence', { method: 'POST' });
-            document.getElementById('sentence-text').innerText = "";
-        }
-    </script>
+    <footer class="footer-credits">
+        <h3>Project Developed By</h3>
+        <p class="team-names">Hassan Kazi • Ayaan Shaikh • Namir Mapari • Ashfaque Chhatbhar</p>
+    </footer>
 
 </body>
 </html>

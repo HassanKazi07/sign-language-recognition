@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Translator | Sign Language</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-orange: #f27024;      
+            --bg-white: #f8fafc;       
+            --card-white: #ffffff;     
+            --text-dark-blue: #0a1f44; 
+            --btn-hover: #163673;      
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--text-dark-blue);
+            color: var(--bg-white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative; 
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: var(--bg-white);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1rem;
+            padding: 10px 20px;
+            border: 2px solid var(--bg-white);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .back-btn:hover {
+            background-color: var(--bg-orange);
+            border-color: var(--bg-orange);
+            color: var(--text-dark-blue);
+            box-shadow: 0 4px 10px rgba(242, 112, 36, 0.4);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            margin-top: 20px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--bg-white); 
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: var(--bg-orange); 
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: row; 
+            justify-content: center;
+            align-items: stretch; 
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px; 
+        }
+
+        .video-card {
+            background: var(--card-white);
+            padding: 25px;
+            border-radius: 16px;
+            border: 4px solid var(--bg-orange);
+            box-shadow: 10px 10px 0px var(--bg-orange); 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1.5; 
+        }
+
+        .video-wrapper {
+            border-radius: 12px;
+            overflow: hidden;
+            border: 3px solid var(--text-dark-blue);
+            background-color: #000;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        img.webcam-feed {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .output-card {
+            background: var(--card-white);
+            padding: 30px;
+            border-radius: 16px;
+            border: 4px solid var(--bg-orange);
+            box-shadow: 10px 10px 0px var(--bg-orange);
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            flex: 1; 
+            position: relative; 
+        }
+
+        .ai-waveform-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            height: 50px; 
+            margin-bottom: 20px;
+        }
+
+        .bar {
+            width: 8px;
+            height: 6px;
+            background-color: var(--bg-orange);
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(242, 112, 36, 0.4);
+            transition: height 0.2s ease;
+        }
+
+        .ai-waveform-container.talking .bar {
+            animation: equalize 0.8s infinite ease-in-out alternate;
+        }
+
+        .ai-waveform-container.talking .bar:nth-child(1) { animation-delay: -0.4s; animation-duration: 0.6s; }
+        .ai-waveform-container.talking .bar:nth-child(2) { animation-delay: -0.2s; animation-duration: 0.7s; }
+        .ai-waveform-container.talking .bar:nth-child(3) { animation-delay: 0s;    animation-duration: 0.5s; }
+        .ai-waveform-container.talking .bar:nth-child(4) { animation-delay: -0.3s; animation-duration: 0.8s; }
+        .ai-waveform-container.talking .bar:nth-child(5) { animation-delay: -0.1s; animation-duration: 0.6s; }
+
+        @keyframes equalize {
+            0% { height: 6px; }
+            100% { height: 40px; }
+        }
+        /* ------------------------- */
+
+        .output-label {
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text-dark-blue);
+            letter-spacing: 1.5px;
+            margin-bottom: 15px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .sentence-display {
+            font-size: 1.5rem; 
+            font-weight: 800;
+            color: var(--text-dark-blue); 
+            min-height: 120px;
+            max-height: 180px; 
+            width: 100%;
+            padding: 20px;
+            background: #f0f4f8; 
+            border-radius: 8px;
+            border: 2px dashed var(--text-dark-blue);
+            margin-bottom: 30px;
+            word-wrap: break-word;
+            overflow-y: auto; 
+            display: block; 
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .btn-clear {
+            background-color: var(--text-dark-blue);
+            color: var(--card-white);
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-clear:hover {
+            background-color: var(--bg-orange); 
+            color: var(--text-dark-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(242, 112, 36, 0.4);
+        }
+
+        .btn-clear:active {
+            transform: translateY(0);
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 4px;
+            height: 1.5rem; 
+            background-color: var(--bg-orange); 
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 900px) {
+            .back-btn {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+            }
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .video-card, .output-card {
+                width: 100%;
+                max-width: 640px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="{{ url_for('index') }}" class="back-btn">← Back to About</a>
+
+    <header>
+        <h1>Sign Recognition Using AI</h1>
+        <p class="subtitle">Real-Time Computer Vision & NLP Engine</p>
+    </header>
+
+    <div class="main-container">
+        <div class="video-card">
+            <div class="output-label">MediaPipe Spatial Tracking Active</div>
+            <div class="video-wrapper">
+                <img src="{{ url_for('video') }}" class="webcam-feed" alt="Webcam Feed">
+            </div>
+        </div>
+
+        <div class="output-card">
+            
+            <div class="ai-waveform-container" id="ai-waveform">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+
+            <div class="output-label">NLP Autocorrected Output Stream</div>
+            <div class="sentence-display">
+                <span id="sentence-text"></span><span class="cursor"></span>
+            </div>
+            <button class="btn-clear" onclick="clearSentence()">Flush AI Context Buffer</button>
+        </div>
+    </div>
+
+    <script>
+        setInterval(() => {
+            fetch('/get_sentence')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('sentence-text').innerText = data.sentence;
+                    
+                    const waveform = document.getElementById('ai-waveform');
+                    
+                    if (data.is_speaking) {
+                        waveform.classList.add('talking');
+                    } else {
+                        waveform.classList.remove('talking');
+                    }
+                });
+        }, 300);
+        
+        function clearSentence() {
+            fetch('/clear_sentence', { method: 'POST' });
+            document.getElementById('sentence-text').innerText = "";
+        }
+    </script>
+
+</body>
+</html>
