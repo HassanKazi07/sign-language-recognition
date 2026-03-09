@@ -30,7 +30,7 @@ Explore
 Clone the repository:
 
 Bash
-git clone <your-repo-link>
+git clone <https://github.com/HassanKazi07/sign-language-recognition>
 Install dependencies:
 
 Bash
